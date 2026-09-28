@@ -1,0 +1,62 @@
+{
+  "info": {
+    "name": "Tercer prototipo - Interoperabilidad ArcGIS",
+    "description": "Pruebas locales del flujo ArcGIS simulado -> API de interoperabilidad -> API institucional MARN simulada.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "interopUrl", "value": "http://localhost:3903" },
+    { "key": "accessToken", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "01 - Salud plataforma",
+      "request": { "method": "GET", "header": [], "url": { "raw": "{{interopUrl}}/health", "host": ["{{interopUrl}}"], "path": ["health"] } }
+    },
+    {
+      "name": "02 - Obtener token",
+      "event": [{
+        "listen": "test",
+        "script": { "exec": ["const json = pm.response.json();", "pm.collectionVariables.set('accessToken', json.access_token);"] }
+      }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"grant_type\": \"client_credentials\",\n  \"client_id\": \"arcgis-demo-client\",\n  \"client_secret\": \"arcgis-demo-secret\"\n}" },
+        "url": { "raw": "{{interopUrl}}/oauth/token", "host": ["{{interopUrl}}"], "path": ["oauth", "token"] }
+      }
+    },
+    {
+      "name": "03 - Metadatos del Feature Layer",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+        "url": { "raw": "{{interopUrl}}/arcgis/rest/services/Interoperabilidad/FeatureServer/0?f=pjson", "host": ["{{interopUrl}}"], "path": ["arcgis", "rest", "services", "Interoperabilidad", "FeatureServer", "0"], "query": [{ "key": "f", "value": "pjson" }] }
+      }
+    },
+    {
+      "name": "04 - Query Feature Layer con Bearer",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }, { "key": "X-Correlation-Id", "value": "postman-arcgis-001" }],
+        "url": { "raw": "{{interopUrl}}/arcgis/rest/services/Interoperabilidad/FeatureServer/0/query?where=DEPARTAMENTO%3D%27Guatemala%27&outFields=NUMERO_INSTRUMENTO,MUNICIPIO,NOMBRE_PROYECTO,CATEGORIA,ESTADO_DICTAMEN&returnGeometry=true&f=json", "host": ["{{interopUrl}}"], "path": ["arcgis", "rest", "services", "Interoperabilidad", "FeatureServer", "0", "query"], "query": [{ "key": "where", "value": "DEPARTAMENTO='Guatemala'" }, { "key": "outFields", "value": "NUMERO_INSTRUMENTO,MUNICIPIO,NOMBRE_PROYECTO,CATEGORIA,ESTADO_DICTAMEN" }, { "key": "returnGeometry", "value": "true" }, { "key": "f", "value": "json" }] }
+      }
+    },
+    {
+      "name": "05 - Query con parámetro token ArcGIS",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{interopUrl}}/arcgis/rest/services/Interoperabilidad/FeatureServer/0/query?where=MUNICIPIO%3D%27Guatemala%27&outFields=*&returnGeometry=true&f=json&token={{accessToken}}", "host": ["{{interopUrl}}"], "path": ["arcgis", "rest", "services", "Interoperabilidad", "FeatureServer", "0", "query"], "query": [{ "key": "where", "value": "MUNICIPIO='Guatemala'" }, { "key": "outFields", "value": "*" }, { "key": "returnGeometry", "value": "true" }, { "key": "f", "value": "json" }, { "key": "token", "value": "{{accessToken}}" }] }
+      }
+    },
+    {
+      "name": "06 - Segunda consulta para demostrar HIT",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+        "url": { "raw": "{{interopUrl}}/arcgis/rest/services/Interoperabilidad/FeatureServer/0/query?where=DEPARTAMENTO%3D%27Guatemala%27&outFields=NUMERO_INSTRUMENTO,MUNICIPIO,NOMBRE_PROYECTO,CATEGORIA,ESTADO_DICTAMEN&returnGeometry=true&f=json", "host": ["{{interopUrl}}"], "path": ["arcgis", "rest", "services", "Interoperabilidad", "FeatureServer", "0", "query"], "query": [{ "key": "where", "value": "DEPARTAMENTO='Guatemala'" }, { "key": "outFields", "value": "NUMERO_INSTRUMENTO,MUNICIPIO,NOMBRE_PROYECTO,CATEGORIA,ESTADO_DICTAMEN" }, { "key": "returnGeometry", "value": "true" }, { "key": "f", "value": "json" }] }
+      }
+    }
+  ]
+}
