@@ -1,5 +1,6 @@
 module.exports = [
   {
+    OBJECTID: 1,
     DEPARTAMENTO: "Guatemala",
     MUNICIPIO: "Guatemala",
     NOMBRE_PROYECTO: "Planta de tratamiento Las Flores",
@@ -19,6 +20,7 @@ module.exports = [
     PLATAFORMA: "SAGA"
   },
   {
+    OBJECTID: 2,
     DEPARTAMENTO: "Escuintla",
     MUNICIPIO: "Escuintla",
     NOMBRE_PROYECTO: "Centro logístico del Pacífico",
@@ -38,6 +40,7 @@ module.exports = [
     PLATAFORMA: "SAGA"
   },
   {
+    OBJECTID: 3,
     DEPARTAMENTO: "Quetzaltenango",
     MUNICIPIO: "Quetzaltenango",
     NOMBRE_PROYECTO: "Parque industrial Los Altos",
@@ -57,6 +60,7 @@ module.exports = [
     PLATAFORMA: "SAGA"
   },
   {
+    OBJECTID: 3,
     DEPARTAMENTO: "Petén",
     MUNICIPIO: "Flores",
     NOMBRE_PROYECTO: "Mejoramiento de infraestructura turística",
@@ -76,6 +80,7 @@ module.exports = [
     PLATAFORMA: "SAGA"
   },
   {
+    OBJECTID: 5,
     DEPARTAMENTO: "Alta Verapaz",
     MUNICIPIO: "Cobán",
     NOMBRE_PROYECTO: "Sistema comunitario de agua",

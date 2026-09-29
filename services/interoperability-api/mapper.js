@@ -1,4 +1,5 @@
 const fieldDefinitions = [
+  ["OBJECTID", "esriFieldTypeOID"],
   ["DEPARTAMENTO", "esriFieldTypeString"],
   ["MUNICIPIO", "esriFieldTypeString"],
   ["NOMBRE_PROYECTO", "esriFieldTypeString"],
@@ -33,6 +34,11 @@ function validateContract(records) {
       error.statusCode = 502;
       throw error;
     }
+    if (typeof record.OBJECTID !== "number") {
+      const error = new Error("OBJECTID no es válido");
+      error.statusCode = 502;
+      throw error;
+    }
   }
 }
 
@@ -43,8 +49,8 @@ function toFeatureSet(records, { returnGeometry, outFields }) {
   const selectedFields = allFields.filter((field) => selectedNames.includes(field.name));
 
   return {
-    objectIdFieldName: "NUMERO_INSTRUMENTO",
-    uniqueIdField: { name: "NUMERO_INSTRUMENTO", isSystemMaintained: false },
+    objectIdFieldName: "OBJECTID",
+    uniqueIdField: { name: "OBJECTID", isSystemMaintained: false },
     geometryType: "esriGeometryPoint",
     spatialReference: { wkid: 4326 },
     fields: selectedFields,
@@ -72,7 +78,7 @@ function layerMetadata() {
     geometryType: "esriGeometryPoint",
     spatialReference: { wkid: 4326 },
     capabilities: "Query",
-    objectIdField: "NUMERO_INSTRUMENTO",
+    objectIdField: "OBJECTID",
     fields: allFields
   };
 }
